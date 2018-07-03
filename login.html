@@ -34,7 +34,7 @@
 			      <input type="checkbox"> 记住密码
 			    </label>
 			  </div>
-			  <button type="button" class="btn btn-danger btn-lg" id="btn">登录</button>
+			  <button type="submit" class="btn btn-danger btn-lg" id="btn">登录</button>
 			</form>
 		
 		</div>
@@ -50,7 +50,8 @@
 	var $pwd = $('#password');
 	var $btn = $('#btn');
 	
-	$btn.click(function(){
+	$btn.click(function(e){
+		e.preventDefault();
 		var params = {
 			username:$account.val(),
 			password:$pwd.val()

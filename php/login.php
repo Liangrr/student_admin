@@ -1,4 +1,5 @@
  <?php
+ 	
 	include 'db_class.php';
     $username = $_POST['username'];
     $password = $_POST['password'];
