@@ -68,15 +68,6 @@ var manager = (function(){
 		},
 		events(){
 			var _this = this;
-//			删除按钮
-			_tbody.on('click','.btn-danger',function(){
-//				jq获取到tr
-				var $tr = $(this).closest('tr');
-//				获取到id的值
-				var $id = $tr.find('td').eq(0).html();
-//				把id,tr传到删除函数
-				_this.delDate($id,$tr);
-			});	
 			
 //			添加按钮
 			$saveBtn.on('click',function(){
@@ -95,7 +86,58 @@ var manager = (function(){
 				},'json');
 			});
 			
+//			删除按钮
+			_tbody.on('click','.btn-danger',function(){
+//				jq获取到tr
+				var $tr = $(this).closest('tr');
+//				获取到id的值
+				var $id = $tr.find('td').eq(0).html();
+//				把id,tr传到删除函数
+				_this.delDate($id,$tr);
+			});	
+			
 //			修改按钮
+			_tbody.on('click','.btn-warning',function(){
+				$(this).html('确定').attr('class','btn btn-success');
+//				jq获取到tr
+				var $tr = $(this).closest('tr');
+				var tdAll = $tr.find('td');
+				for (var i=1;i<tdAll.length-1;i++) {
+					var val = tdAll.eq(i).html();
+					console.log(val);
+					tdAll.eq(i).html(`<input type='text' value=${val}></input>`);
+				}
+				
+			});
+//			确定按钮
+			_tbody.on('click','.btn-success',function(){
+				var _this = this;
+//				jq获取到tr
+				var $tr = $(this).closest('tr');
+				var tdAll = $tr.find('td');
+//				获取数据传到后台判断是否正确
+				var params = {
+					id:tdAll.eq(0).html(),
+					name:tdAll.eq(1).find('input').val(),
+					sex:tdAll.eq(2).find('input').val(),
+					age:tdAll.eq(3).find('input').val(),
+					grade:tdAll.eq(4).find('input').val(),
+					username:tdAll.eq(5).find('input').val(),
+					password:tdAll.eq(6).find('input').val()
+				}
+				$.post('php/update.php',params,function(json){
+//					如果正确执行这里,获取输入框的值并且进行更新
+					if (json.code==200) {
+						$(_this).html('更新').attr('class','btn btn-warning');
+						for (var i=1;i<tdAll.length-1;i++) {
+							var val = tdAll.eq(i).find('input').val();
+							tdAll.eq(i).html(val);
+						}	
+					}
+					
+				},'json');
+				
+			});
 			
 		}
 	}
