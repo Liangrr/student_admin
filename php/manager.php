@@ -1,6 +1,6 @@
 <?php
 	include "db_class.php";
- 
+ 	header('Content-Type: text/html; charset=UTF-8');
 	$sql = "select * from tb_student";
 	$conn = new db();
 	$rows = $conn -> query($sql,1);
