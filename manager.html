@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+		 <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+  <title>管理员页面</title>
+</head>
+<body>
+  <button id="add">添加新学员</button>
+  <table class="table table-bordered" id="tb">
+  	<tbody id="tbd">
+      <tr>
+        <td>编号</td>
+        <td>姓名</td>
+        <td>性别</td>
+        <td>年龄</td>
+        <td>成绩</td>
+        <td>账号</td>
+        <td>密码</td>
+        <td>按钮</td>
+      </tr>
+	</tbody>
+  </table>
+		    <script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
+		    <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</body>
+</html>
+<script type="text/javascript">
+	var _tb = $('#tb');
+	var _tbody = $('#tbd');
+
+	var dels = document.querySelectorAll('.btn-danger');
+	$.post("php/manager.php",managerCB,'json');
+	
+	function managerCB(json){
+			var data = json.data;
+			for (var i=0;i<data.length;i++) {
+				var _tr = $('<tr></tr>');
+				_tr.attr("class","tr");
+				for (var j=0;j<data[i].length;j++) {
+					var _td = $('<td></td>');
+					_td.append(data[i][j]);
+					_tr.append(_td);
+				}
+				var _td = $('<td></td>');
+				var _updateBtn = $('<button>更新</button>');
+				var _delBtn = $('<button>删除</button>');
+				_delBtn.index = i;
+				_updateBtn.attr("class","btn btn-warning");
+				_delBtn.attr("class","btn btn-danger");
+				_td.append(_updateBtn);
+				_td.append(_delBtn);
+				_tr.append(_td);
+				_tbody.append(_tr);
+			}
+	}
+//	ready作用是执行完所有文档再执行这里
+	$(document).ready(function(){
+		//添加学生
+		$(document).on('click','#add',function(){
+			var hideTr = $(this).siblings('#tb').children('#tbd').children('.tr').first();
+			var newTr = hideTr.clone().show();
+			$("#tbd").append(newTr);
+		});
+		
+		//删除学生信息
+		_tbody.on('click','.btn-danger',function(){
+			$(this).parent().parent().remove();
+		});	
+		
+		_tbody.on('click','.btn-warning',function(){
+//			var tr = $(this).parent().parent();
+//			$("td:not('.op')",tr).each(function(i,el){
+//				el = $(el);
+//				var html = "<input value='"+el.text()+"' type='text'>";
+//				el.html(html);
+//			});
+//			$(".js_stuedit_btn",tr).hide();
+//			$(".js_stusave_btn",tr).show();
+		});
+		
+	});
+
+</script>
